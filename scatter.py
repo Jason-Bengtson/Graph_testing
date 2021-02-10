@@ -3,7 +3,7 @@ import pandas as pd
 import csv
 import string
 import matplotlib.pyplot as plt
-
+from sklearn.ensemble import IsolationForest
 
 def main():
 
@@ -80,12 +80,13 @@ def main():
         print("2. Compare duration and destination")
         print("3. Compare source and destination")
         print("4. Choose which to compare")
-        print("5. Quit")
+        print("5. Isolation forest testing")
+        print("6. Quit")
 
 
 
         main_input = int(input("What would you like to do? "))
-        if main_input == 5:
+        if main_input == 6:
             print("Every meeting must have a parting")
             loop_condition = False
             break
@@ -109,24 +110,26 @@ def main():
 
                 count = 1
                 for i in fields:
-                    print(count , i)
-                    count += 1
+                   print(count , i)
+                   count += 1
                 a = input("Please enter the first column number:")
+                inpa = (int(a) - 1)
                 for i in rows:
                     if i[41] == 'normal':
-                        normal_a.append(i[int(a)])
+                        normal_a.append(i[inpa])
                     else:
-                        anom_a.append(i[int(a)])
-                print("normal:", normal_a)
-                print("Anom: ", anom_a)
-                xname = fields[(int(a)+1)]
+                        anom_a.append(i[inpa])
+                #print("normal:", normal_a)
+                #print("Anom: ", anom_a)
+                xname = fields[(int(a)-1)]
                 b = input("Please enter the second column number:")
+                inpb = (int(b) -1)
                 for j in rows:
                     if j[41] == 'normal':
-                        normal_b.append(j[int(b)])
+                       normal_b.append(j[inpb])
                     else:
-                        anom_b.append(j[int(b)])
-                yname = fields[(int(b)+1)]
+                       anom_b.append(j[inpb])
+                yname = fields[(int(b)-1)]
                 w = np.array(normal_a)
                 x = np.array(anom_a)
                 y = np.array(normal_b)
@@ -139,6 +142,17 @@ def main():
     #print(fields)
     #print()
     #print(dtype)
+
+            elif main_input == 5:
+                X = []
+                X.append(duration)
+                X.append(source_bytes)
+                #X.append(dest_bytes)
+                clf = IsolationForest(max_samples=500, random_state=1)
+                clf.fit(X)
+                y_pred = clf.predict(X)
+                print(y_pred)
+
     
 
 def scatter_plot(w, x, y, z, x_label, y_label):
@@ -155,7 +169,7 @@ def scatter_plot(w, x, y, z, x_label, y_label):
     
     plt.scatter(w,y, color='r')
     plt.scatter(x,z, color='b')
-    plt.title(x_label + ' and ' + y_label + ' Scatter Plot')
+    plt.title("Red points are normal and Blue are anomalous")
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.xticks([])
