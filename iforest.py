@@ -35,7 +35,7 @@ for j in y_true:
 print("Normal data: ", normal)
 print("Anomalous data: ", anom)
 
-clf = IsolationForest(max_samples=200, random_state=2)
+clf = IsolationForest(max_samples=300, random_state=2)
 clf.fit(X)
 y_pred = clf.predict(X)
 print(y_pred)
@@ -63,13 +63,13 @@ false_neg = 0
 
 for i in range(len(myarray)):
     if myarray[i] == 'normal' and myotherarray[i] == '1':
-        true_pos += 1
+        true_neg += 1
     elif myarray[i] == 'normal' and myotherarray[i] == '-1':
         false_neg += 1
     elif myarray[i] == 'not normal' and myotherarray[i] == '1':
         false_pos += 1
     else:
-        true_neg += 1
+        true_pos += 1
 
 
 
@@ -104,7 +104,7 @@ print("False negative: ", false_neg)
 #         false_neg += 1
 
 
-def scatter_plot(true_pos, false_pos, true_neg, false_neg):
+def plot(true_pos, false_pos, true_neg, false_neg):
     print()
     print("Made it into the scatter plot function")
 
@@ -118,21 +118,8 @@ def scatter_plot(true_pos, false_pos, true_neg, false_neg):
     plt.bar(x, height=[true_pos, false_pos, true_neg, false_neg])
     plt.xticks(x, ['true positive', 'false positive', 'true negative', 'false negative'])
 
-
-    # plt.histogram(true_pos, true_neg, color='r')
-    # plt.histogram(false_pos, fasle_neg, color='b')
-    # plt.title("Red points are normal and Blue are anomalous")
-    # plt.xticks([])
-    # plt.yticks([])
     plt.show()
 
-    #fig=plt.figure()
-    #ax=fig.add_axes([0,0,1,1])
-    #ax.scatter(w, y, color='r')
-    #ax.scatter(x, z, color='b')
-    #ax.set_xlabel("x_label")
-    #ax.set_ylabel("y_label")
-    #ax.set_title('scatter plot')
-    #plt.show()
 
-scatter_plot(true_pos, false_pos, true_neg, false_neg)
+
+plot(true_pos, false_pos, true_neg, false_neg)
