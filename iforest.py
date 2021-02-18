@@ -2,7 +2,7 @@ from sklearn.datasets import fetch_kddcup99
 from sklearn.ensemble import IsolationForest
 
 
-network_traffic_data = fetch_kddcup99('smtp', percent10=True)
+network_traffic_data = fetch_kddcup99('http', percent10=True)
 network_traffic_data['data'].shape
 print(network_traffic_data['DESCR'])
 X = network_traffic_data['data']
